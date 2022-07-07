@@ -14,7 +14,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ScrollPage(),
+      home: const Scaffold(
+        body: ScrollPage(),
+      )
     );
   }
 }
@@ -48,12 +50,31 @@ class _ScrollPageStage extends State<ScrollPage> {
               background: FlutterLogo(),
             ),
           ),
-          const SliverToBoxAdapter(
-            child: SizedBox(
-              height: 20,
-              child: Center(
-                child: Text('Scroll to see the SliverAppBar in effect.'),
-              ),
+          SliverToBoxAdapter(
+            child: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: SizedBox(
+                    height: 20,
+                    child: Center(
+                      child: Text('Scroll to see the SliverAppBar in effect.'),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Center(
+                    child: ElevatedButton(
+                      onPressed: showPersistentBottomSheet,
+                      child: const Text(
+                        "Show Persistent BottomSheet",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           SliverList(
@@ -123,10 +144,53 @@ class _ScrollPageStage extends State<ScrollPage> {
                   ),
                 ],
               ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  ElevatedButton(
+                    onPressed: showPersistentBottomSheet,
+                    child: const Text(
+                      "Show Persistent BottomSheet",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void showPersistentBottomSheet() {
+    Scaffold.of(context).showBottomSheet<void>((BuildContext context) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ListTile(
+            leading: const Icon(Icons.person),
+            title: const Text(' My Profile '),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.edit),
+            title: const Text(' Edit Profile '),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('LogOut'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      );
+    });
   }
 }
